@@ -6,13 +6,12 @@ using Clb.Bll;
 namespace Clb.Dal
 {
     /// <summary>
-    ///     Crud methods that takes a storedprocedure name and alternately a DataTable with parameters
+    ///     Crud methods that takes a storedprocedure name and optionally a DataTable with parameters
     /// </summary>
     public class Crud
     {
         private readonly SqlCommand _cmd = new SqlCommand();
         private readonly SqlConnection _conn = new SqlConnection(ConfigurationManager.ConnectionStrings["connStr"].ConnectionString);
-        private readonly CreateDataTable _createDataTable;
         private readonly InitializeCommand _initializeCommand;
         private readonly Parameters _parameters;
         private readonly Query _query;
@@ -20,7 +19,6 @@ namespace Clb.Dal
         public Crud(string storedProcedure)
         {
             _parameters = new Parameters(this);
-            _createDataTable = new CreateDataTable();
             _query = new Query(this);
             _initializeCommand = new InitializeCommand(this);
             StoredProcedureProperty = storedProcedure;
@@ -29,7 +27,6 @@ namespace Clb.Dal
         public Crud(string storedProcedure, DataTable dataTableProperty)
         {
             _parameters = new Parameters(this);
-            _createDataTable = new CreateDataTable();
             _query = new Query(this);
             _initializeCommand = new InitializeCommand(this);
             DataTableProperty = dataTableProperty;
@@ -40,7 +37,6 @@ namespace Clb.Dal
         public string StoredProcedureProperty { get; private set; }
         public SqlConnection Conn { get { return _conn; } }
         public SqlCommand Cmd { get { return _cmd; } }
-        public CreateDataTable CreateDataTable { get { return _createDataTable; } }
 
         public void Insert()
         {
